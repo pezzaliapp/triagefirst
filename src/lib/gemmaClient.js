@@ -1,4 +1,4 @@
-const GEMMA_MODEL = 'gemini-2.0-flash'
+const GEMMA_MODEL = 'gemma-3-27b-it'
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models'
 const DEFAULT_KEY = 'AIzaSyA_eI0LF4S28OEHPV5U4G855DubBEVum90'
 
