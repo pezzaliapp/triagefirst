@@ -112,11 +112,7 @@ export default function App() {
               lang={lang}
               labels={labels}
             />
-            <ApiKeyInput
-              value={apiKey}
-              onChange={handleApiKeyChange}
-              labels={labels}
-            />
+            
           </>
         )}
 
