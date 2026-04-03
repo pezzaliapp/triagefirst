@@ -1,9 +1,12 @@
 import { useState, useRef, useCallback } from 'react'
 
 const LANG_MAP = {
-  en: 'en-US', fr: 'fr-FR', sw: 'sw-KE',
-  hi: 'hi-IN', pt: 'pt-BR', ar: 'ar-SA',
-  es: 'es-ES', it: 'it-IT',
+  en: 'en-US', it: 'it-IT', fr: 'fr-FR', de: 'de-DE',
+  es: 'es-ES', pt: 'pt-BR', ro: 'ro-RO', bg: 'bg-BG',
+  sq: 'sq-AL', ru: 'ru-RU', sv: 'sv-SE', no: 'nb-NO',
+  et: 'et-EE', lv: 'lv-LV', lt: 'lt-LT', tr: 'tr-TR',
+  ar: 'ar-SA', sw: 'sw-KE', hi: 'hi-IN', bn: 'bn-BD',
+  id: 'id-ID', tl: 'fil-PH',
 }
 
 export function useVoiceInput(lang, onTranscript) {
