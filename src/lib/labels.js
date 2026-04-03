@@ -9,6 +9,17 @@ export const LANGS = [
   { code: 'it', label: 'Italiano' },
 ]
 
+export const TAGLINES = {
+  en: 'Offline-ready medical triage · Powered by Gemma 4',
+  fr: 'Triage médical hors ligne · Propulsé par Gemma 4',
+  sw: 'Utata wa kimatibabu bila mtandao · Inayotumia Gemma 4',
+  hi: 'ऑफलाइन चिकित्सा ट्राइएज · Gemma 4 द्वारा संचालित',
+  pt: 'Triagem médica offline · Desenvolvido com Gemma 4',
+  ar: 'فرز طبي بدون إنترنت · مدعوم بـ Gemma 4',
+  es: 'Triaje médico sin conexión · Impulsado por Gemma 4',
+  it: 'Triage medico offline · Sviluppato con Gemma 4',
+}
+
 export const LABELS = {
   en: {
     analyze: 'Analyze symptoms',

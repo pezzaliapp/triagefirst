@@ -8,7 +8,7 @@ import { TriageResult } from './components/TriageResult.jsx'
 import { HistoryPanel } from './components/HistoryPanel.jsx'
 import { callGemma } from './lib/gemmaClient.js'
 import { buildPrompt } from './lib/prompts.js'
-import { LABELS } from './lib/labels.js'
+import { LABELS, TAGLINES } from './lib/labels.js'
 import { useTriageHistory } from './hooks/useTriageHistory.js'
 
 const STORAGE_KEY_LANG = 'tf_lang'
@@ -67,7 +67,7 @@ export default function App() {
 
   return (
     <>
-      <Header />
+      <Header tagline={TAGLINES[lang] || TAGLINES.en} />
       <LangBar currentLang={lang} onLangChange={handleLangChange} />
 
       <main className="main">

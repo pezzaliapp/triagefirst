@@ -11,9 +11,8 @@ export function TriageResult({ result, onReset, labels }) {
 
   const level = (result.level || 'AMBER').toUpperCase()
   const config = LEVEL_CONFIG[level] || LEVEL_CONFIG.AMBER
-  const levelLabel = labels[`level${level.charAt(0) + level.slice(1).toLowerCase()}`]
-    || labels[`level${level}`]
-    || level
+  const levelKeyMap = { RED: 'levelRed', AMBER: 'levelAmber', GREEN: 'levelGreen' }
+  const levelLabel = labels[levelKeyMap[level]] || level
 
   return (
     <div className="result-wrapper">
