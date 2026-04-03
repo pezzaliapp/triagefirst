@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Header } from './components/Header.jsx'
 import { LangBar } from './components/LangBar.jsx'
 import { PatientMeta } from './components/PatientMeta.jsx'
@@ -13,6 +13,7 @@ import { useTriageHistory } from './hooks/useTriageHistory.js'
 
 const STORAGE_KEY_LANG = 'tf_lang'
 const STORAGE_KEY_APIKEY = 'tf_apikey'
+const STORAGE_KEY_THEME = 'tf_theme'
 
 export default function App() {
   const [lang, setLang] = useState(() => localStorage.getItem(STORAGE_KEY_LANG) || 'en')
@@ -22,9 +23,24 @@ export default function App() {
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_THEME)
+    return saved ? saved === 'dark' : false
+  })
   const { history, addEntry, clearHistory } = useTriageHistory()
 
   const labels = LABELS[lang] || LABELS.en
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light')
+  }, [isDark])
+
+  const handleToggleTheme = () => setIsDark((d) => !d)
 
   const handleLangChange = (code) => {
     setLang(code)
@@ -67,7 +83,11 @@ export default function App() {
 
   return (
     <>
-      <Header tagline={TAGLINES[lang] || TAGLINES.en} />
+      <Header
+        tagline={TAGLINES[lang] || TAGLINES.en}
+        isDark={isDark}
+        onToggleTheme={handleToggleTheme}
+      />
       <LangBar currentLang={lang} onLangChange={handleLangChange} />
 
       <main className="main">
