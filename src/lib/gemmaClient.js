@@ -1,11 +1,11 @@
 const GEMMA_MODEL = 'gemma-3-27b-it'
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models'
+const DEFAULT_KEY = 'AIzaSyA_eI0LF4S28OEHPV5U4G855DubBEVum90'
 
-export async function callGemma(apiKey, prompt) {
-  if (!apiKey) throw new Error('API key is required')
+export async function callGemma(userApiKey, prompt) {
+  const apiKey = userApiKey?.trim() || DEFAULT_KEY
 
   const url = `${API_BASE}/${GEMMA_MODEL}:generateContent?key=${apiKey}`
-
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -24,18 +24,14 @@ export async function callGemma(apiKey, prompt) {
       ],
     }),
   })
-
   if (!response.ok) {
     const errData = await response.json().catch(() => ({}))
     throw new Error(errData.error?.message || `API error ${response.status}`)
   }
-
   const data = await response.json()
   const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
-
   const jsonMatch = rawText.match(/\{[\s\S]*\}/)
   if (!jsonMatch) throw new Error('Could not parse model response. Please try again.')
-
   try {
     return JSON.parse(jsonMatch[0])
   } catch {
