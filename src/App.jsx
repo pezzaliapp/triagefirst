@@ -6,10 +6,12 @@ import { SymptomInput } from './components/SymptomInput.jsx'
 import { ApiKeyInput } from './components/ApiKeyInput.jsx'
 import { TriageResult } from './components/TriageResult.jsx'
 import { HistoryPanel } from './components/HistoryPanel.jsx'
+import { EmergencyFooter } from './components/EmergencyFooter.jsx'
 import { callGemma } from './lib/gemmaClient.js'
 import { buildPrompt } from './lib/prompts.js'
 import { LABELS, TAGLINES } from './lib/labels.js'
 import { useTriageHistory } from './hooks/useTriageHistory.js'
+import { useLocation } from './hooks/useLocation.js'
 
 const STORAGE_KEY_LANG = 'tf_lang'
 const STORAGE_KEY_APIKEY = 'tf_apikey'
@@ -28,15 +30,13 @@ export default function App() {
     return saved ? saved === 'dark' : false
   })
   const { history, addEntry, clearHistory } = useTriageHistory()
+  const { location, countryCode, emergency, loading: locLoading, asked, requestLocation, getMapsUrl } = useLocation()
 
   const labels = LABELS[lang] || LABELS.en
 
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    if (isDark) document.documentElement.classList.add('dark')
+    else document.documentElement.classList.remove('dark')
     localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light')
   }, [isDark])
 
@@ -60,7 +60,6 @@ export default function App() {
     setError(null)
     if (!apiKey.trim()) { setError(labels.noKey); return }
     if (symptoms.trim().length < 5) { setError(labels.noSymptoms); return }
-
     setLoading(true)
     try {
       const prompt = buildPrompt(lang, meta.age, meta.sex, meta.pregnant, symptoms)
@@ -120,9 +119,7 @@ export default function App() {
           </>
         )}
 
-        {error && (
-          <div className="error-msg" role="alert">{error}</div>
-        )}
+        {error && <div className="error-msg" role="alert">{error}</div>}
 
         {result && (
           <TriageResult
@@ -138,6 +135,17 @@ export default function App() {
           labels={labels}
         />
       </main>
+
+      <EmergencyFooter
+        emergency={emergency}
+        location={location}
+        countryCode={countryCode}
+        loading={locLoading}
+        asked={asked}
+        onRequestLocation={requestLocation}
+        getMapsUrl={getMapsUrl}
+        labels={labels}
+      />
     </>
   )
 }
